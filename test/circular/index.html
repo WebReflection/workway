@@ -1,0 +1,17 @@
+<!doctype html>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script type="module">
+import workway from 'https://unpkg.com/workway/esm';
+import {stringify} from 'https://unpkg.com/flatted/esm';
+
+workway('analyzer.js').then(({namespace}) => {
+  const data = {arr: []};
+  data.arr.push(data);
+  data.data = data;
+  namespace.analyze(stringify(data))
+            .then(
+              state => document.body.textContent = state,
+              console.error
+            );
+});
+</script>

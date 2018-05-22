@@ -3,6 +3,7 @@
 A general purpose, Web Worker driven, remote namespace with classes and methods.
 
 
+
 ## Example
 A basic **firebase.js** client to show the user name.
 ```js
@@ -76,6 +77,7 @@ self.onmessage = event => {
 ```
 
 
+
 ## The RemoteClass convention
 
 Classes exposed through `workway` namespace must follow these rules:
@@ -88,13 +90,18 @@ Classes exposed through `workway` namespace must follow these rules:
   * multiple methods invocation at once are possible, but there is no guarantee of the order. Use promises features or `await` each call if sequential methods calls depend on previous results.
 
 
+
 ## Compatibility
 
-The code is written in a ES5 friendly syntax, and it's guaranteed to work in IE 10 or above, and mostly every mobile browser.
+The code is written in a ES5 friendly syntax, and it's guaranteed to work in IE 10 or above, and mostly every mobile browser on platforms such iOS 8+, Android 4.4+, Blackberry OS 10+, or Windows Phone 8+.
 
-However, in IE 10/11 case, you need to provide polyfills on both client and worker side, right before this script.
+You can test live your browser through the **[live test page](https://webreflection.github.io/workway/test/index.html)**.
 
-Feel free to choose the one you prefer, following just as example:
+Please note in IE 10/11 or other old browser cases, you might need to provide polyfills on both client and worker side.
+
+Feel free to choose the polyfill you prefer.
+
+Following just as example:
 
 ```html
 <!doctype html>
@@ -120,7 +127,46 @@ importScripts('https://unpkg.com/workway/worker.js');
 // ... the rest of the code ... 
 ```
 
-You can test live your browser through the [live test page](https://webreflection.github.io/workway/test/index.html).
+
+
+## About Recursive data
+
+If you need to invoke a method passing an object that might contain recursive data you can serialize it upfront and parse it once received.
+
+```js
+// main thread app.js side
+import workway from 'https://unpkg.com/workway/esm';
+import {stringify} from 'https://unpkg.com/flatted/esm';
+
+workway('analyzer.js').then(({namespace}) => {
+  const data = {arr: []};
+  data.arr.push(data);
+  data.data = data;
+  namespace.analyze(stringify(data))
+            .then(
+              state => document.body.textContent = state,
+              console.error
+            );
+});
+
+
+
+// worker side: analyzer.js
+importScripts(
+  'https://unpkg.com/workway/worker.js',
+  'https://unpkg.com/flatted'
+);
+
+workway({
+  analyze(circular) {
+    const data = Flatted.parse(circular);
+    return 'OK';
+  }
+});
+```
+
+You can [test above example right here](https://webreflection.github.io/workway/test/circular/).
+
 
 
 ### Extra Info

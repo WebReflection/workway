@@ -1,0 +1,21 @@
+{
+  "name": "workway",
+  "version": "0.0.0",
+  "description": "A general purpose, Web Worker driven, remote namespace with classes and methods.",
+  "browser": "min.js",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "scripts": {
+    "build": "npm run cjs && npm run esm && npm test && npm run min && npm run size",
+    "cjs": "cp index.js cjs/ && echo 'module.exports = workway;' >> cjs/index.js",
+    "esm": "cp index.js esm/ && echo 'export default workway;' >> esm/index.js",
+    "min": "uglifyjs index.js --comments=/^!/ -m -c -o min.js",
+    "size": "cat index.js | wc -c;cat min.js | wc -c;gzip -c9 min.js | wc -c;cat min.js | brotli | wc -c && rm -f min.js.br",
+    "test": "cd test && node index.js && echo $(tput bold)OK$(tput sgr0)"
+  },
+  "author": "Andrea Giammarchi",
+  "license": "ISC",
+  "devDependencies": {
+    "uglify-js": "^3.3.26"
+  }
+}

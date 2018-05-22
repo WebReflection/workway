@@ -1,3 +1,5 @@
+// a Blackberry gotcha, no console in workers
+if (!self.console) self.console = {log: function () {}, error: function () {}};
 // import the polyfill you prefer for IE11 or IE10
 if (!self.Promise) importScripts('https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js');
 if (!self.WeakMap) importScripts('https://unpkg.com/poorlyfills@0.1.1/min.js');

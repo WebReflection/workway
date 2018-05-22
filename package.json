@@ -1,6 +1,6 @@
 {
   "name": "workway",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A general purpose, Web Worker driven, remote namespace with classes and methods.",
   "browser": "min.js",
   "main": "cjs/index.js",

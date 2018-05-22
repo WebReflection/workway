@@ -1,4 +1,4 @@
-# remotely [![Build Status](https://travis-ci.org/WebReflection/remotely.svg?branch=master)](https://travis-ci.org/WebReflection/remotely) [![License: ISC](https://img.shields.io/badge/License-ISC-yellow.svg)](https://opensource.org/licenses/ISC)
+# workway [![Build Status](https://travis-ci.org/WebReflection/workway.svg?branch=master)](https://travis-ci.org/WebReflection/workway) [![License: ISC](https://img.shields.io/badge/License-ISC-yellow.svg)](https://opensource.org/licenses/ISC)
 
 A general purpose, Web Worker driven, remote namespace with classes and methods.
 
@@ -6,7 +6,7 @@ A general purpose, Web Worker driven, remote namespace with classes and methods.
 ## Example
 A basic **firebase.js** client to show the user name.
 ```js
-remotely('/workers/firebase.js').then(
+workway('/workers/firebase.js').then(
   async function ({worker, namespace}) {
     await namespace.initializeApp({
       apiKey: "<API_KEY>",
@@ -29,7 +29,7 @@ remotely('/workers/firebase.js').then(
 The **workers/firebase.js** worker that exposes some info.
 ```js
 // top import to ensure a transparent communication channel
-importScripts('https://unpkg.com/remotely/worker.js');
+importScripts('https://unpkg.com/workway/worker.js');
 
 // any other needed import for this worker
 importScripts(...[
@@ -39,7 +39,7 @@ importScripts(...[
 // expose a namespaces as an object
 // with any sort of serializable value
 // and also methods or classes
-remotely({
+workway({
 
   // any serializable data is OK (nested too)
   timestamp: Date.now(),
@@ -69,7 +69,7 @@ remotely({
 });
 
 // this worker can be regularly used like any other worker
-// the passed event will never be one handled by `remotely`
+// the passed event will never be one handled by `workway`
 self.onmessage = event => {
   console.log(event.data);
 };
@@ -78,7 +78,7 @@ self.onmessage = event => {
 
 ## The RemoteClass convention
 
-Classes exposed through `remotely` namespace must follow these rules:
+Classes exposed through `workway` namespace must follow these rules:
 
   * no constructor arguments; use methods to eventually forward extra details from the client
   * methods can accept only serializable arguments and can return either a serializable value or a promise that will resolve as serializable data
@@ -97,11 +97,11 @@ However, in IE11 case, you need to provide a polyfill on the client side, which 
 ```html
 <!doctype html>
 <script>if(!this.Promise)document.write('<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"><'+'/script>')</script>
-<script src="https://unpkg.com/remotely"></script>
+<script src="https://unpkg.com/workway"></script>
 <script src="firebase.js"></script>
 ```
 
-You can test live your browser through the [live test page](https://webreflection.github.io/remotely/test/).
+You can test live your browser through the [live test page](https://webreflection.github.io/workway/test/).
 
 
 ### Extra Info

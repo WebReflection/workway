@@ -1,4 +1,3 @@
-if (!self.Promise) importScripts('https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js');
 (function () {'use strict';
   /*! (c) 2018 Andrea Giammarchi (ISC) */
   function walkThrough(O, K) { return O[K]; }

@@ -90,15 +90,34 @@ Classes exposed through `workway` namespace must follow these rules:
 
 ## Compatibility
 
-The code is written in a ES5 friendly syntax, and it's guaranteed to work in IE11 or above, and mostly every mobile browser.
+The code is written in a ES5 friendly syntax, and it's guaranteed to work in IE 10 or above, and mostly every mobile browser.
 
-However, in IE11 case, you need to provide a polyfill on the client side, which is in the following example the same polyfill used on the worker side.
+However, in IE 10/11 case, you need to provide polyfills on both client and worker side, right before this script.
+
+Feel free to choose the one you prefer, following just as example:
 
 ```html
 <!doctype html>
-<script>if(!this.Promise)document.write('<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"><'+'/script>')</script>
+<script>
+// needed for IE11
+if(!this.Promise)document.write('<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"><'+'/script>');
+// needed for IE10
+if(!this.WeakMap)document.write('<script src="https://unpkg.com/poorlyfills@0.1.1/min.js"><'+'/script>');
+</script>
 <script src="https://unpkg.com/workway"></script>
 <script src="firebase.js"></script>
+```
+
+Or on top of your generic worker.
+```js
+// import the polyfill you prefer for either IE11 or IE10
+if (!self.Promise) importScripts('https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js');
+if (!self.WeakMap) importScripts('https://unpkg.com/poorlyfills@0.1.1/min.js');
+
+// now import workway/worker.js before any other worker script
+importScripts('https://unpkg.com/workway/worker.js');
+
+// ... the rest of the code ... 
 ```
 
 You can test live your browser through the [live test page](https://webreflection.github.io/workway/test/index.html).

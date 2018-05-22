@@ -1,6 +1,7 @@
 function workway(file) {'use strict';
   /*! (c) 2018 Andrea Giammarchi (ISC) */
   return new Promise(function (res, rej) {
+    function uid() { return ++i + Math.random(); }
     var i = 0;
     var channel = uid();
     var messages = {};
@@ -95,7 +96,6 @@ function workway(file) {'use strict';
       }
     });
     worker.postMessage({channel: channel});
-    function uid() { return ++i + Math.random(); }
   });
 }
 module.exports = workway;

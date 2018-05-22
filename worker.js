@@ -1,6 +1,7 @@
 if (!self.Promise) importScripts('https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js');
 (function () {'use strict';
   /*! (c) 2018 Andrea Giammarchi (ISC) */
+  function walkThrough(O, K) { return O[K]; }
   var namespace;
   var channels = {};
   var instances = {};
@@ -92,29 +93,29 @@ if (!self.Promise) importScripts('https://cdn.jsdelivr.net/npm/es6-promise@4/dis
       try {
         if (message.hasOwnProperty('method')) {
           method = message.method;
-            var Class = path.reduce(walkThrough, namespace);
-            if (!Class)
-              return send({
-                error: 'Unknown Class ' + path.join('.')
-              });
-            if (message.hasOwnProperty('object')) {
-              var object = message.object;
-              const instance = instances[object.id] ||
-                              (instances[object.id] = new Class);
-              if (method === 'destroy')
-                delete instances[object.id];
-              else {
-                Object.keys(object.value)
-                      .forEach(function (key) {
-                        instance[key] = object.value[key];
-                      });
-                Promise.resolve(instance[method].apply(instance, args))
-                        .then(resolved, rejected);
-              }
-            } else {
-              Promise.resolve(Class[method].apply(Class, args))
+          var Class = path.reduce(walkThrough, namespace);
+          if (!Class)
+            return send({
+              error: 'Unknown Class ' + path.join('.')
+            });
+          if (message.hasOwnProperty('object')) {
+            var object = message.object;
+            var instance = instances[object.id] ||
+                            (instances[object.id] = new Class);
+            if (method === 'destroy')
+              delete instances[object.id];
+            else {
+              Object.keys(object.value)
+                    .forEach(function (key) {
+                      instance[key] = object.value[key];
+                    });
+              Promise.resolve(instance[method].apply(instance, args))
                       .then(resolved, rejected);
             }
+          } else {
+            Promise.resolve(Class[method].apply(Class, args))
+                    .then(resolved, rejected);
+          }
         } else {
           var context = path.slice(0, -1).reduce(walkThrough, namespace);
           if (!context)
@@ -143,5 +144,4 @@ if (!self.Promise) importScripts('https://cdn.jsdelivr.net/npm/es6-promise@4/dis
       });
     }
   });
-  function walkThrough(O, K) { return O[K]; }
 }());

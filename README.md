@@ -101,7 +101,7 @@ However, in IE11 case, you need to provide a polyfill on the client side, which 
 <script src="firebase.js"></script>
 ```
 
-You can test live your browser through the [live test page](https://webreflection.github.io/workway/test/).
+You can test live your browser through the [live test page](https://webreflection.github.io/workway/test/index.html).
 
 
 ### Extra Info

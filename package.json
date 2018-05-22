@@ -17,5 +17,20 @@
   "license": "ISC",
   "devDependencies": {
     "uglify-js": "^3.3.26"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebReflection/workway.git"
+  },
+  "keywords": [
+    "web",
+    "worker",
+    "remote",
+    "namespace",
+    "driven"
+  ],
+  "bugs": {
+    "url": "https://github.com/WebReflection/workway/issues"
+  },
+  "homepage": "https://github.com/WebReflection/workway#readme"
 }

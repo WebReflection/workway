@@ -20,7 +20,7 @@ workway('./background.js').then(function (info) {
   // however there are few limitations such inheritance
   // and constructor arguments, which is always, and only
   // the unique identifier used to pair local/remote instances
-  const instance = new namespace.nested.Test;
+  var instance = new namespace.nested.Test;
 
   // properties can be added, as long as these are serializable
   instance.test = Math.random();

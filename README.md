@@ -4,6 +4,15 @@ A general purpose, Web Worker driven, remote namespace with classes and methods.
 
 
 
+## Key Features
+
+  * no eval at all, no scope issues, 100% CSP friendly
+  * no Proxy at all neither, compatible with IE 10, iOS 8, Android 4.4, BB OS 10, and [every other browser](https://webreflection.github.io/workway/test/)
+  * 100LOC client squeezed in about 0.5K once compressed
+  * you expose non blocking namespaces to the main thread, not the other way around
+
+
+
 ## Example
 A basic **firebase.js** client to show the user name.
 ```js

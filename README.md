@@ -10,10 +10,11 @@ A general purpose, Web Worker driven, remote namespace with classes and methods.
   * no Proxy at all neither, compatible with IE 10, iOS 8, Android 4.4, BB OS 10, and [every other browser](https://webreflection.github.io/workway/test/)
   * 100LOC client squeezed in about 0.5K once compressed
   * you expose non blocking namespaces to the main thread, not the other way around
+  * it **works on NodeJS** too 🎉
 
 
 
-## Example
+## Example <sup><sub>(client side only)</sub></sup>
 A basic **firebase.js** client to show the user name.
 ```js
 workway('/workers/firebase.js').then(
@@ -83,6 +84,50 @@ workway({
 self.onmessage = event => {
   console.log(event.data);
 };
+```
+
+
+## Example <sup><sub>(NodeJS)</sub></sup>
+
+A `js/os.js` file for the client side.
+```js
+workway('node://os.js').then(({worker, os}) => {
+  os.getNetworkInterfaces().then(console.log);
+});
+```
+
+Please note the client file needs EventTarget, Promise, and WeakMap constructors.
+If your target browsers don't have these features, you can use the following polyfills on top of your HTML file.
+
+```html
+<script>
+if(!this.Promise)document.write('<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"><'+'/script>');
+if(!this.WeakMap)document.write('<script src="https://unpkg.com/poorlyfills@0.1.1/min.js"><'+'/script>');
+try{new EventTarget}catch(e){document.write('<script src="https://unpkg.com/event-target@1.2.2/min.js"><'+'/script>')}
+</script>
+```
+
+
+Following a `workers/os.js` file to serve via NodeJS.
+```js
+// note: you require a facade here via 'workway'
+var workway = require('workway');
+workway(require('os'));
+```
+
+An express / node based bootstrap.
+```js
+var express = require('express');
+
+// note: you require the real module as 'workway/node'
+var workway = require('workway/node');
+// authorize / expose a specific folder
+// that contains web driven workers
+workway.authorize(__dirname + '/workers');
+
+var app = workway.app(express());
+app.use(express.static(__dirname + '/www'));
+app.listen(8080);
 ```
 
 

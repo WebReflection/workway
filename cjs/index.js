@@ -68,7 +68,7 @@ function workway(file) {'use strict';
           return promise;
         };
         var slice = [].slice;
-        var update = function (namespace) {
+        (function update(namespace) {
           Object.keys(namespace).forEach(function (key) {
             var info = namespace[key];
             switch (info.type) {
@@ -78,8 +78,7 @@ function workway(file) {'use strict';
               default: namespace[key] = info.value;
             }
           });
-        };
-        update(namespace);
+        }(namespace));
         res({
           worker: worker,
           namespace: namespace

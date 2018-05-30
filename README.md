@@ -138,6 +138,13 @@ app.use(express.static(__dirname + '/www'));
 app.listen(8080);
 ```
 
+### NodeJS extra features & gotchas
+
+  * exact same API (actually exact same code) of the real Web Worker based client side
+  * circular objects are supported out of the box via [flatted](https://github.com/WebReflection/flatted#flatted) on both ways
+  * the `self` global (but sandboxed) variable points at the global
+  * the `self.workway` method is already there, feel free to use it instead of requiring it from workers
+  * the `self.addEventListener` and `self.remoteEventListener` are normalized to work like on the front end side: do not use emitter methods directly with your node workers or messages and errors might not be signaled as expected
 
 
 ## The RemoteClass convention

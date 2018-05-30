@@ -47,7 +47,7 @@ function createSandbox(filename, socket) {
     }
   };
   self.removeEventListener = function (type, listener) {
-    self.removeListener(type, listeners.gas(listener));
+    self.removeListener(type, listeners.get(listener));
   };
   self.__filename = filename;
   self.__dirname = path.dirname(filename);

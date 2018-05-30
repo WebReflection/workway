@@ -89,7 +89,15 @@ self.onmessage = event => {
 
 ## Example <sup><sub>(NodeJS)</sub></sup>
 
-A `js/os.js` file for the client side.
+To have NodeJS driven workers you need the regular client side `workway.js` file, plus `/socket.io/socket.io.js` and `/workway@node.js` that are both handled by this module.
+
+```html
+<script src="/workway.js">/* regular workway client file */</script>
+<script src="/socket.io/socket.io.js">/* automatically provided by the server */</script>
+<script src="/workway@node.js">/* automatically provided by the server */</script>
+```
+
+This is a `js/os.js` file for the client side.
 ```js
 workway('node://os.js').then(({worker, os}) => {
   os.getNetworkInterfaces().then(console.log);

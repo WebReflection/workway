@@ -112,29 +112,35 @@ uid.delete = function (sandbox) {
     return found;
   });
 };
+
 function uid(filename, socket) {
   var id = filename + ':uid-'.concat(++uid.i, '-', crypto.randomBytes(8).toString('hex'));
   uid.map[id] = socket;
   return id;
 }
 
-process.on('uncaughtException', function (err) {
+function uncaught(err) {
   console.error(err);
   if (/([\S]+?(:uid-\d+-[a-f0-9]{16}))/.test(err.stack)) {
     var socket = uid.map[RegExp.$1];
     if (socket) error(socket, err);
   }
-});
+}
 
 function Event(data) {
   this.canceled = false;
   this.data = JSON.parse(data);
 }
+
 Event.prototype.stopImmediatePropagation = function () {
   this.canceled = true;
 };
 
 var workers = '';
+
+process.on('unhandledRejection', uncaught);
+process.on('uncaughtException', uncaught);
+
 module.exports = {
   authorize: function (folder) {
     if (workers.length) throw new Error('workway already authorized');

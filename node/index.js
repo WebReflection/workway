@@ -1,4 +1,6 @@
-// core modules
+"use strict";
+
+// used core modules
 var EventEmitter = require('events').EventEmitter;
 var crypto = require('crypto');
 var fs = require('fs');
@@ -6,32 +8,35 @@ var http = require('http');
 var path = require('path');
 var vm = require('vm');
 
-// dependencies
+// extra dependencies
 var socketIO = require('socket.io');
 var JSON = require('flatted');
-var remoted = require('../cjs/remoted');
 var workerjs = fs.readFileSync(
   path.resolve(__dirname, '..', 'worker.js')
 ).toString();
 
-// local constants / variables
 // used as communication channel
 var SECRET = crypto.randomBytes(32).toString('hex');
 
-var jsClient = {
-  SECRET: SECRET,
-  JSON: fs.readFileSync(require.resolve('flatted/min.js'))
-          .toString()
-          .replace(
-            /var \w+\s*=/,
-            'var JSON = (function(JSON){return ') + '}(window.JSON));'
-};
-
+// the client side is enriched at runtime
 var jsContent = fs.readFileSync(path.join(__dirname, 'client.js'))
                   .toString()
-                  .replace(/\$\{(SECRET|JSON)\}/g, function ($0, $1) {
-                    return jsClient[$1];
-                  });
+                  .replace(
+                    /\$\{(SECRET|JSON)\}/g,
+                    function ($0, $1) { return this[$1]; }.bind({
+                      SECRET: SECRET,
+                      JSON: fs.readFileSync(require.resolve('flatted/min.js'))
+                              .toString()
+                              .replace(
+                                /var \w+\s*=/,
+                                'var JSON = (function(JSON){return ') + '}(window.JSON));'
+                    })
+                  );
+
+var workers = '';
+
+process.on('unhandledRejection', uncaught);
+process.on('uncaughtException', uncaught);
 
 // return a new Worker sandbox
 function createSandbox(filename, socket) {
@@ -135,11 +140,6 @@ function Event(data) {
 Event.prototype.stopImmediatePropagation = function () {
   this.canceled = true;
 };
-
-var workers = '';
-
-process.on('unhandledRejection', uncaught);
-process.on('uncaughtException', uncaught);
 
 module.exports = {
   authorize: function (folder) {

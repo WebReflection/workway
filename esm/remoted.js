@@ -57,4 +57,5 @@ function remoted(object) {
       return within.indexOf(what) < 0;
     };
   }
-}export default remoted;
+}
+export default remoted;

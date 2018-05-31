@@ -7,7 +7,7 @@
   "module": "esm/index.js",
   "scripts": {
     "build": "npm run remoted:cjs && npm run remoted:esm && npm run bundle && npm run cjs && npm run esm && npm test && npm run min && npm run size",
-    "bundle": "node -e 'fs.writeFileSync(\"worker.js\", fs.readFileSync(\"partial/worker.js\").toString().replace(/^(\\s*)\\/\\/js:(\\w+)/gm,(o,s,k)=>fs.readFileSync(k+\".js\").toString().replace(/^/gm,s)))'",
+    "bundle": "node -e 'fs.writeFileSync(\"worker.js\", fs.readFileSync(\"partial/worker.js\").toString().replace(/^(\\s*)\\/\\/js:(\\w+)/gm,(o,s,k)=>fs.readFileSync(k+\".js\").toString().trim().replace(/^/gm,s)))'",
     "cjs": "cp index.js cjs/ && echo 'module.exports = workway;' >> cjs/index.js",
     "esm": "cp index.js esm/ && echo 'export default workway;' >> esm/index.js",
     "min": "uglifyjs index.js --comments=/^!/ -m -c -o min.js",

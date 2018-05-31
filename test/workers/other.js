@@ -1,1 +1,1 @@
-console.log('other file');
+console.log(__filename);

@@ -77,9 +77,16 @@ function createSandbox(filename, socket) {
   return self;
 }
 
+function cleanedStack(stack) {
+  return ''.replace.call(stack, /:uid-\d+-[a-f0-9]{16}/g, '');
+}
+
 // notify the socket there was an error
-function error(socket, error) {
-  socket.emit(SECRET + ':error', JSON.stringify(error));
+function error(socket, err) {
+  socket.emit(SECRET + ':error', JSON.stringify({
+    message: err.message,
+    stack: cleanedStack(err.stack)
+  }));
 }
 
 // send serialized data to the client
@@ -112,15 +119,10 @@ function uid(filename, socket) {
 }
 
 process.on('uncaughtException', function (err) {
-  if (/\(([\S]+?(:uid-\d+-[a-f0-9]{16}))/.test(err.stack)) {
+  console.error(err);
+  if (/([\S]+?(:uid-\d+-[a-f0-9]{16}))/.test(err.stack)) {
     var socket = uid.map[RegExp.$1];
-    var secret = RegExp.$2;
-    if (socket) {
-      error(socket, {
-        message: err.message,
-        stack: ''.replace.call(err.stack, secret, '')
-      });
-    }
+    if (socket) error(socket, err);
   }
 });
 
@@ -174,7 +176,7 @@ module.exports = {
               sandbox.onmessage(event);
             }
           } catch(err) {
-            error(socket, {message: err.message, stack: err.stack});
+            error(socket, err);
           }
         }
         else queue.push(data);

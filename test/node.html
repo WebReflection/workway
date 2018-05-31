@@ -14,7 +14,11 @@ try{new EventTarget}catch(e){document.write('<script src="https://unpkg.com/even
 workway('node://test.js').then(({worker, namespace}) => {
   // workers have regular methods
   worker.addEventListener('message', event => {
-    console.log(event.data);
+    console.info(event.data);
+  });
+  worker.addEventListener('error', event => {
+    console.error(event.message);
+    console.error(event.stack);
   });
   // here I have exported require('os') directly
   namespace.os.platform().then(console.log);

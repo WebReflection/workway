@@ -1,5 +1,7 @@
 var workway = require('workway');
 
+// require('./other');
+
 workway({
   os: require('os'),
   ping: function () {

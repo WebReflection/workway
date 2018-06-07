@@ -99,7 +99,7 @@ To have NodeJS driven workers you need the regular client side `workway.js` file
 
 This is a `js/os.js` file for the client side.
 ```js
-workway('node://os.js').then(({worker, os}) => {
+workway('node://os.js').then(({worker, namespace:os}) => {
   os.getNetworkInterfaces().then(console.log);
 });
 ```

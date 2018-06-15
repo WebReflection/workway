@@ -6,20 +6,64 @@
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "scripts": {
-    "build": "npm run remoted:cjs && npm run remoted:esm && npm run bundle && npm run cjs && npm run esm && npm test && npm run min && npm run size",
-    "bundle": "node -e 'fs.writeFileSync(\"worker.js\", fs.readFileSync(\"partial/worker.js\").toString().replace(/^(\\s*)\\/\\/js:(\\w+)/gm,(o,s,k)=>fs.readFileSync(k+\".js\").toString().trim().replace(/^/gm,s)))'",
-    "cjs": "cp index.js cjs/ && echo 'module.exports = workway;' >> cjs/index.js",
-    "esm": "cp index.js esm/ && echo 'export default workway;' >> esm/index.js",
-    "min": "uglifyjs index.js --comments=/^!/ -m -c -o min.js",
-    "remoted:cjs": "cp remoted.js cjs/ && echo 'module.exports = remoted;' >> cjs/remoted.js",
-    "remoted:esm": "cp remoted.js esm/ && echo 'export default remoted;' >> esm/remoted.js",
-    "size": "cat index.js | wc -c;cat min.js | wc -c;gzip -c9 min.js | wc -c;cat min.js | brotli | wc -c && rm -f min.js.br",
-    "test": "cd test && node index.js && echo $(tput bold)OK$(tput sgr0)"
+    "$": "npm-dollar",
+    "build": "npm-dollar build",
+    "bundle": "npm-dollar bundle",
+    "size": "npm-dollar size",
+    "test": "npm-dollar test"
+  },
+  "$": {
+    "build": [
+      "$ remoted",
+      "$ bundle",
+      "$ test",
+      "$ size"
+    ],
+    "bundle": {
+      "cjs": [
+        "cp index.js cjs/",
+        "echo 'module.exports = workway;' >> cjs/index.js"
+      ],
+      "esm": [
+        "cp index.js esm/",
+        "echo 'export default workway;' >> esm/index.js"
+      ],
+      "min": "uglifyjs index.js --comments=/^!/ -m -c -o min.js",
+      "node": [[
+        "node -e 'fs.writeFileSync(\"worker.js\",",
+        "fs.readFileSync(\"partial/worker.js\").toString().replace(/^(\\s*)\\/\\/js:(\\w+)/gm,",
+        "(o,s,k)=>fs.readFileSync(k+\".js\").toString().trim().replace(/^/gm,s)))'"
+      ]]
+    },
+    "remoted": {
+      "cjs": [
+        "cp remoted.js cjs/",
+        "echo 'module.exports = remoted;' >> cjs/remoted.js"
+      ],
+      "esm": [
+        "cp remoted.js esm/",
+        "echo 'export default remoted;' >> esm/remoted.js"
+      ]
+    },
+    "size": [[
+      "cat index.js |",
+      "wc -c;cat min.js |",
+      "wc -c;gzip -c9 min.js |",
+      "wc -c;cat min.js |",
+      "brotli |",
+      "wc -c && rm -f min.js.br"
+    ]],
+    "test": [
+      "cd test",
+      "node index.js",
+      "echo $(tput bold)OK$(tput sgr0)"
+    ]
   },
   "author": "Andrea Giammarchi",
   "license": "ISC",
   "devDependencies": {
     "express": "^4.16.3",
+    "npm-dollar": "^0.1.3",
     "uglify-js": "^3.3.26"
   },
   "repository": {

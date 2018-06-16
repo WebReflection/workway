@@ -29,11 +29,13 @@
         "echo 'export default workway;' >> esm/index.js"
       ],
       "min": "uglifyjs index.js --comments=/^!/ -m -c -o min.js",
-      "node": [[
-        "node -e 'fs.writeFileSync(\"worker.js\",",
-        "fs.readFileSync(\"partial/worker.js\").toString().replace(/^(\\s*)\\/\\/js:(\\w+)/gm,",
-        "(o,s,k)=>fs.readFileSync(k+\".js\").toString().trim().replace(/^/gm,s)))'"
-      ]]
+      "node": [
+        [
+          "node -e 'fs.writeFileSync(\"worker.js\",",
+          "fs.readFileSync(\"partial/worker.js\").toString().replace(/^(\\s*)\\/\\/js:(\\w+)/gm,",
+          "(o,s,k)=>fs.readFileSync(k+\".js\").toString().trim().replace(/^/gm,s)))'"
+        ]
+      ]
     },
     "remoted": {
       "cjs": [
@@ -45,14 +47,16 @@
         "echo 'export default remoted;' >> esm/remoted.js"
       ]
     },
-    "size": [[
-      "cat index.js |",
-      "wc -c;cat min.js |",
-      "wc -c;gzip -c9 min.js |",
-      "wc -c;cat min.js |",
-      "brotli |",
-      "wc -c && rm -f min.js.br"
-    ]],
+    "size": [
+      [
+        "cat index.js |",
+        "wc -c;cat min.js |",
+        "wc -c;gzip -c9 min.js |",
+        "wc -c;cat min.js |",
+        "brotli |",
+        "wc -c && rm -f min.js.br"
+      ]
+    ],
     "test": [
       "cd test",
       "node index.js",
@@ -83,7 +87,6 @@
   "homepage": "https://github.com/WebReflection/workway#readme",
   "dependencies": {
     "flatted": "^0.2.2",
-    "socket.io": "^2.1.1",
-    "socket.io-client": "^2.1.1"
+    "pocket.io": "0.0.3"
   }
 }

@@ -9,7 +9,7 @@ var path = require('path');
 var vm = require('vm');
 
 // extra dependencies
-var socketIO = require('socket.io');
+var pocketIO = require('pocket.io');
 var JSON = require('flatted');
 var workerjs = fs.readFileSync(
   path.resolve(__dirname, '..', 'worker.js')
@@ -151,7 +151,7 @@ module.exports = {
     var io;
     var native = app instanceof http.Server;
     if (native) {
-      io = socketIO(app);
+      io = pocketIO(app);
       var request = app._events.request;
       app._events.request = function (req) {
         return /^\/workway@node\.js(?:\?|$)/.test(req.url) ?
@@ -160,7 +160,7 @@ module.exports = {
       };
     } else {
       var wrap = http.Server(app);
-      io = socketIO(wrap);
+      io = pocketIO(wrap);
       app.get('/workway@node.js', responder);
       Object.defineProperty(app, 'listen', {
         configurable: true,

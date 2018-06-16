@@ -76,7 +76,7 @@ window.workway = (function (Worker, workway, SECRET) {
 
     terminate: function () {
       instances.splice(instances.indexOf(this), 1);
-      sockets.get(this).destroy();
+      sockets.get(this).disconnect();
     }
 
   };

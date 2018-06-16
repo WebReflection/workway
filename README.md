@@ -89,11 +89,11 @@ self.onmessage = event => {
 
 ## Example <sup><sub>(NodeJS)</sub></sup>
 
-To have NodeJS driven workers you need the regular client side `workway.js` file, plus `/socket.io/socket.io.js` and `/workway@node.js` that are both handled by this module.
+To have NodeJS driven workers you need the regular client side `workway.js` file, plus `/pocket.io/pocket.io.js` and `/workway@node.js` that are both handled by this module.
 
 ```html
 <script src="/workway.js">/* regular workway client file */</script>
-<script src="/socket.io/socket.io.js">/* automatically provided by the server */</script>
+<script src="/pocket.io/pocket.io.js">/* automatically provided by the server */</script>
 <script src="/workway@node.js">/* automatically provided by the server */</script>
 ```
 

@@ -87,6 +87,6 @@
   "homepage": "https://github.com/WebReflection/workway#readme",
   "dependencies": {
     "flatted": "^0.2.2",
-    "pocket.io": "0.0.3"
+    "pocket.io": "^0.1.2"
   }
 }

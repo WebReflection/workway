@@ -1,11 +1,7 @@
-importScripts(
-  'https://unpkg.com/workway/worker.js',
-  'https://unpkg.com/flatted'
-);
+importScripts('https://unpkg.com/workway/worker.js');
 
 workway({
   analyze(circular) {
-    const data = Flatted.parse(circular);
-    return 'OK';
+    return circular;
   }
 });

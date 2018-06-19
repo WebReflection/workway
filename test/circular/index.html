@@ -2,15 +2,25 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <script type="module">
 import workway from 'https://unpkg.com/workway/esm';
-import {stringify} from 'https://unpkg.com/flatted/esm';
 
 workway('analyzer.js').then(({namespace}) => {
   const data = {arr: []};
   data.arr.push(data);
   data.data = data;
-  namespace.analyze(stringify(data))
+  namespace.analyze(data)
             .then(
-              state => document.body.textContent = state,
+              data => {
+                if (
+                  data &&
+                  data.arr &&
+                  data.arr[0] === data &&
+                  data.arr.length === 1 &&
+                  data.data === data
+                )
+                  document.body.textContent = 'it works 🎉';
+                else
+                  throw new Error('unable to solve recursion');
+              },
               console.error
             );
 });

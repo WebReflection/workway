@@ -32,7 +32,7 @@ window.workway = (function (Worker, workway, SECRET) {
   );
 
   function NodeWorker(ep) {
-    var socket = io();
+    var socket = io({JSON: Flatted});
     var self = new EventTarget;
     self.postMessage = this.postMessage;
     self.terminate = this.terminate;
@@ -54,24 +54,23 @@ window.workway = (function (Worker, workway, SECRET) {
 
   NodeWorker.prototype = {
 
-    onerror: function (message) {
+    onerror: function (error) {
       var event = createEvent('error');
-      var error = JSON.parse(message);
       event.message = error.message;
       event.stack = error.stack;
       this.dispatchEvent(event);
       if (this.onerror) this.onerror(event);
     },
 
-    onmessage: function (message) {
+    onmessage: function (data) {
       var event = createEvent('message');
-      event.data = JSON.parse(message);
+      event.data = data;
       this.dispatchEvent(event);
       if (this.onmessage) this.onmessage(event);
     },
 
     postMessage: function (message) {
-      sockets.get(this).emit(SECRET, JSON.stringify(message));
+      sockets.get(this).emit(SECRET, message);
     },
 
     terminate: function () {

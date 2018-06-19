@@ -9,8 +9,8 @@ var path = require('path');
 var vm = require('vm');
 
 // extra dependencies
+var Flatted = require('flatted');
 var pocketIO = require('pocket.io');
-var JSON = require('flatted');
 var workerjs = fs.readFileSync(
   path.resolve(__dirname, '..', 'worker.js')
 ).toString();
@@ -25,11 +25,7 @@ var jsContent = fs.readFileSync(path.join(__dirname, 'client.js'))
                     /\$\{(SECRET|JSON)\}/g,
                     function ($0, $1) { return this[$1]; }.bind({
                       SECRET: SECRET,
-                      JSON: fs.readFileSync(require.resolve('flatted/min.js'))
-                              .toString()
-                              .replace(
-                                /var \w+\s*=/,
-                                'var JSON = (function(JSON){return ') + '}(window.JSON));'
+                      JSON: fs.readFileSync(require.resolve('flatted/min.js')).toString()
                     })
                   );
 
@@ -88,15 +84,15 @@ function cleanedStack(stack) {
 
 // notify the socket there was an error
 function error(socket, err) {
-  socket.emit(SECRET + ':error', JSON.stringify({
+  socket.emit(SECRET + ':error', {
     message: err.message,
     stack: cleanedStack(err.stack)
-  }));
+  });
 }
 
 // send serialized data to the client
 function message(socket, data) {
-  socket.emit(SECRET + ':message', JSON.stringify(data));
+  socket.emit(SECRET + ':message', data);
 }
 
 // used to send /node-worker.js client file
@@ -134,7 +130,7 @@ function uncaught(err) {
 
 function Event(data) {
   this.canceled = false;
-  this.data = JSON.parse(data);
+  this.data = data;
 }
 
 Event.prototype.stopImmediatePropagation = function () {
@@ -151,7 +147,7 @@ module.exports = {
     var io;
     var native = app instanceof http.Server;
     if (native) {
-      io = pocketIO(app);
+      io = pocketIO(app, {JSON: Flatted});
       var request = app._events.request;
       app._events.request = function (req) {
         return /^\/workway@node\.js(?:\?|$)/.test(req.url) ?
@@ -160,7 +156,7 @@ module.exports = {
       };
     } else {
       var wrap = http.Server(app);
-      io = pocketIO(wrap);
+      io = pocketIO(wrap, {JSON: Flatted});
       app.get('/workway@node.js', responder);
       Object.defineProperty(app, 'listen', {
         configurable: true,

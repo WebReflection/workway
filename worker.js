@@ -83,9 +83,19 @@
       var path = message.path;
       var args = message.args;
       var resolved = function (result) { send({result: result}); };
-      var rejected = function (error) { send(
-        {error: error ? (error.message || error) : 'unknown'}
-      ); };
+      var rejected = function (error) {
+        if (
+          error != null &&
+          typeof error === 'object' &&
+          'message' in error
+        )
+          send({error: {
+            stack: error.stack,
+            message: error.message
+          }});
+        else
+          send({error: {source: error}});
+      };
       var send = function (message) {
         message.id = id;
         self.postMessage({
@@ -98,9 +108,7 @@
           method = message.method;
           var Class = path.reduce(walkThrough, namespace);
           if (!Class)
-            return send({
-              error: 'Unknown Class ' + path.join('.')
-            });
+            return rejected('Unknown Class ' + path.join('.'));
           if (message.hasOwnProperty('object')) {
             var object = message.object;
             var instance = instances[object.id] ||
@@ -122,19 +130,15 @@
         } else {
           var context = path.slice(0, -1).reduce(walkThrough, namespace);
           if (!context)
-            return send({
-              error: 'Unknown namespace ' + path.slice(0, -1).join('.')
-            });
+            return rejected('Unknown namespace ' + path.slice(0, -1).join('.'));
           method = path[path.length - 1];
           if (typeof context[method] !== 'function')
-            return send({
-              error: 'Unknown method ' + path.join('.')
-            });
+            return rejected('Unknown method ' + path.join('.'));
           Promise.resolve(context[method].apply(context, args))
                   .then(resolved, rejected);
         }
       } catch(error) {
-        send({error: error.message});
+        rejected(error);
       }
     } else if (/^(-?\d+\.\d+)$/.test(channel)) {
       channels[channel] = true;

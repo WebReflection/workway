@@ -88,8 +88,16 @@ function workway(file) {'use strict';
         var id = message.id;
         var promise = messages[id];
         delete messages[id];
-        if (message.hasOwnProperty('error'))
-          promise.reject(new Error(message.error));
+        if (message.hasOwnProperty('error')) {
+          var error, facade = message.error;
+          if (facade.hasOwnProperty('source'))
+            error = facade.source;
+          else {
+            error = new Error(facade.message);
+            error.stack = facade.stack;
+          }
+          promise.reject(error);
+        }
         else
           promise.resolve(message.result);
       }

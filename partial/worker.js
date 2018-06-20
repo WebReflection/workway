@@ -24,7 +24,9 @@
       var path = message.path;
       var args = message.args;
       var resolved = function (result) { send({result: result}); };
-      var rejected = function (error) {  send({error: error.message}); };
+      var rejected = function (error) { send(
+        {error: error ? (error.message || error) : 'unknown'}
+      ); };
       var send = function (message) {
         message.id = id;
         self.postMessage({

@@ -11,13 +11,13 @@ app.get('/', function (req, res) {
   res.writeHead(200, 'OK', {
     'Content-Type': 'text/html; charset=utf-8'
   });
-  res.end(require('fs').readFileSync(path.resolve(__dirname, 'node.html')));
+  res.end(require('fs').readFileSync(path.resolve(__dirname, 'foo.html')));
 });
 app.get('/workway.js', function (req, res) {
   res.writeHead(200, 'OK', {
     'Content-Type': 'application/javascript; charset=utf-8'
   });
-  res.end(require('fs').readFileSync(path.resolve(__dirname, '..', 'index.js')));
+  res.end(require('fs').readFileSync(path.resolve(__dirname, '..', 'min.js')));
 });
 app.listen(PORT, () => {
   console.log('listening on http://localhost:' + PORT);

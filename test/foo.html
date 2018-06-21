@@ -1,0 +1,16 @@
+<!doctype html>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>
+if(!this.Promise)document.write('<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"><'+'/script>');
+if(!this.WeakMap)document.write('<script src="https://unpkg.com/poorlyfills@0.1.1/min.js"><'+'/script>');
+try{new EventTarget}catch(e){document.write('<script src="https://unpkg.com/event-target@1.2.2/min.js"><'+'/script>')}
+</script>
+<script src="/workway.js"></script>
+<script src="/pocket.io/pocket.io.js"></script>
+<script src="/workway@node.js"></script>
+<script>
+workway('node://foo.js').then(async ({worker, namespace:foo}) => {
+  foo.fooPromisified("unused")
+    .then(console.info, console.error);
+});
+</script>

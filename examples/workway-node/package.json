@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "description": "A basic workway driven NodeJS example",
+  "scripts": {
+    "postinstall": "npm start",
+    "start": "node index.js"
+  },
+  "author": "Andrea Giammarchi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "workway": "^0.5.2"
+  }
+}

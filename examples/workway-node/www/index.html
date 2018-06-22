@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+    <title>workway meets NodeJS</title>
+    <style>body { font-family: sans-serif; }</style>
+    <script>
+    if(!this.Promise)document.write('<script src="/js/poly/es6-promise.js"><'+'/script>');
+    if(!this.WeakMap)document.write('<script src="/js/poly/poorlyfills.js"><'+'/script>');
+    try{new EventTarget}catch(e){document.write('<script src="/js/poly/event-target.js"><'+'/script>')}
+    </script>
+    <script src="/js/3rd/hyperhtml.js"></script>
+    <script src="/js/3rd/workway.js"></script>
+    <script src="/pocket.io/pocket.io.js"></script>
+    <script src="/workway@node.js"></script>
+    <script src="/js/index.js"></script>
+  </head>
+  <body></body>
+</html>

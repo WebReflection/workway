@@ -1,0 +1,14 @@
+{
+  "name": "workway-demo",
+  "private": true,
+  "dependencies": {
+    "express": "^4.16.3",
+    "workway": "^0.5.2"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "postinstall": "npm start"
+  },
+  "author": "Andrea Giammarchi",
+  "license": "ISC"
+}

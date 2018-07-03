@@ -2,7 +2,7 @@
   "name": "workway",
   "version": "0.5.2",
   "description": "A general purpose, Web Worker driven, remote namespace with classes and methods.",
-  "browser": "min.js",
+  "unpkg": "min.js",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "scripts": {

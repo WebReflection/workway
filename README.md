@@ -35,6 +35,11 @@ workway('/workers/firebase.js').then(
     worker.postMessage('all good');
   }
 );
+
+// you can also pass in an existing Worker instance (useful if you're using
+// Webpack's worker-loader and don't have access to the output file path):
+import Worker from 'worker-loader!./Worker.js';
+workway(new Worker()).then(...
 ```
 
 The **workers/firebase.js** worker that exposes some info.
@@ -84,16 +89,6 @@ workway({
 self.onmessage = event => {
   console.log(event.data);
 };
-```
-
-## Example <sup><sub>(Webpack worker-loader)</sub></sup>
-There is a slightly different syntax to support Workers created using [Webpack's worker-loader](https://github.com/webpack-contrib/worker-loader), which doesn't expose the worker's file path directly:
-```js
-import Worker from './file.worker.js';
-
-workway(new Worker()).then(
-  async function ({worker, namespace}) {
-    ...
 ```
 
 ## Example <sup><sub>(NodeJS)</sub></sup>

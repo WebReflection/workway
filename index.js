@@ -5,7 +5,7 @@ function workway(file) {'use strict';
     var i = 0;
     var channel = uid();
     var messages = {};
-    var worker = file instanceof Worker ? file : new Worker(file);
+    var worker = typeof file === 'string' ? new Worker(file) : file;
     worker.addEventListener('message', function (event) {
       if (event.data.channel !== channel) return;
       event.stopImmediatePropagation();

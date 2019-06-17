@@ -35,6 +35,11 @@ workway('/workers/firebase.js').then(
     worker.postMessage('all good');
   }
 );
+
+// you can also pass in an existing Worker instance (useful if you're using
+// Webpack's worker-loader and don't have access to the output file path):
+import Worker from 'worker-loader!./Worker.js';
+workway(new Worker()).then(...
 ```
 
 The **workers/firebase.js** worker that exposes some info.
@@ -85,7 +90,6 @@ self.onmessage = event => {
   console.log(event.data);
 };
 ```
-
 
 ## Example <sup><sub>(NodeJS)</sub></sup>
 

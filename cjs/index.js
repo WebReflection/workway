@@ -1,6 +1,6 @@
 function workway(file) {'use strict';
   /*! (c) 2018 Andrea Giammarchi (ISC) */
-  return new Promise(function (res, rej) {
+  return new Promise(function (res) {
     function uid() { return ++i + Math.random(); }
     var i = 0;
     var channel = uid();

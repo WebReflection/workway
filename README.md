@@ -68,7 +68,7 @@ workway({
   },
 
   // classes are also fine, as long as
-  // these respect RemoteClass convetions
+  // these respect RemoteClass conventions
   FirebaseUser: class FirebaseUser {
     constructor() {
       this.uid = firebase.auth().currentUser.uid;

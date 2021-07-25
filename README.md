@@ -3,6 +3,13 @@
 A general purpose, Web Worker driven, remote namespace with classes and methods.
 
 
+## Update: Meet proxied-worker
+
+There is a new, very similar, yet different, project, in case you're looking to simply drive generic Workers instances, or namespaces, from a client/main thread: [proxied-worker](https://github.com/WebReflection/proxied-worker#readme).
+
+It doesn't offer all the NodeJS features this module does, but it's a better answer for browser only operations 👍
+
+
 
 ## Key Features
 

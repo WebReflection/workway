@@ -3,12 +3,21 @@
 A general purpose, Web Worker driven, remote namespace with classes and methods.
 
 
-## Update: Meet proxied-worker
+- - -
+
+## Announcement: Meet proxied-worker & proxied-node
 
 There is a new, very similar, yet different, project, in case you're looking to simply drive generic Workers instances, or namespaces, from a client/main thread: [proxied-worker](https://github.com/WebReflection/proxied-worker#readme).
 
-It doesn't offer all the NodeJS features this module does, but it's a better answer for browser only operations 👍
+It has [a NodeJS counterpart module](https://github.com/WebReflection/proxied-node#readme) too!
 
+The main difference with these projects is:
+
+  * classes have a working constructor
+  * heap is automatically cleaned on both client/server
+  * it uses *Proxy* and *FinalizationRegistry* so these are not as compatible as *workway* is with legacy browsers
+
+- - -
 
 
 ## Key Features

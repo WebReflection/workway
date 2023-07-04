@@ -1,4 +1,4 @@
-# workway [![Build Status](https://travis-ci.org/WebReflection/workway.svg?branch=master)](https://travis-ci.org/WebReflection/workway) [![License: ISC](https://img.shields.io/badge/License-ISC-yellow.svg)](https://opensource.org/licenses/ISC)
+# workway DEPRECATED - See [coincident](https://github.com/WebReflection/coincident#coincidentserver)
 
 A general purpose, Web Worker driven, remote namespace with classes and methods.
 
